@@ -9,7 +9,7 @@ class Judge
     // カードのランク表 ['A' => 1, '2' => 2, ... 'Q' => 12, 'K' => 13 ]
     private array $cardRanks;
 
-    public function __construct(Deck $deck)
+    public function __construct()
     {
         define('CARD_RANK', (function () {
             $cardRanks = [];
@@ -26,7 +26,7 @@ class Judge
     }
 
     // スコアを算出して返す
-    public function calculateScore(array $drawnCards, User $user)
+    public function calculateScore(array $drawnCards, User $user): int
     {
         // カード情報の数字（アルファベット）をキーとするカードランクを取得
         // $drawnCards [["ハート","A"],["ハート","8"],...]
@@ -37,5 +37,21 @@ class Judge
 
         // 得点を返す
         return $user->userScore;
+    }
+
+    public function judgeWinner(Player $player, Dealer $dealer)
+    {
+        // それぞれの得点の、21との差を求める
+        $playerDifference = abs($player->userScore - 21);
+        $dealerDifference = abs($dealer->userScore - 21);
+
+        // 差が小さい方が勝ち
+        if ($playerDifference < $dealerDifference) {
+            return "あなたの勝ちです！" . PHP_EOL;
+        } elseif ($playerDifference > $dealerDifference) {
+            return "ディーラーの勝ちです！" . PHP_EOL;
+        } elseif ($playerDifference === $dealerDifference) {
+            return "引き分けです！" . PHP_EOL;
+        }
     }
 }

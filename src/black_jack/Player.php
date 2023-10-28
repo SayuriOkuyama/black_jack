@@ -20,9 +20,11 @@ class Player implements User
         return $deck->drawCard();
     }
 
+    // もう一枚引くか選択
     public function selectContinue(): bool
     {
         while (true) {
+            // 標準入力を受け取る
             $continue = trim(fgets(STDIN));
             if ($continue == "Y") {
                 return true;

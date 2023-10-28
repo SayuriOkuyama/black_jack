@@ -29,7 +29,7 @@ class Deck
     }
 
     // $cardStock からカード（インスタンス）を１枚引いて返す
-    public function drawCard()
+    public function drawCard(): object
     {
         // $cardStock 配列の先頭を切り出して返す
         return array_shift($this->cardStock);
