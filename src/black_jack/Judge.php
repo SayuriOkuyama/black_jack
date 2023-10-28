@@ -6,23 +6,25 @@ require_once('Deck.php');
 
 class Judge
 {
-    // カードのランク表 ['A' => 1, '2' => 2, ... 'Q' => 12, 'K' => 13 ]
-    private array $cardRanks;
+    // カードのランク表 ['A' => 1, '2' => 2, ... 'Q' => 10, 'K' => 10 ]
+    public array $cardRanks;
 
     public function __construct()
     {
-        define('CARD_RANK', (function () {
-            $cardRanks = [];
-            // A から K まで回す
-            $rank = 1;
-            foreach (Deck::CARD_NUM as $cardNum) {
-                // 1 から始めてランクを割り当てていく
-                $cardRanks[$cardNum] = $rank;
+        $cardRanks = [];
+
+        // A から K まで回す
+        $rank = 1;
+        foreach (Deck::CARD_NUM as $cardNum) {
+            // 1 から始めてランクを割り当てていく
+            $cardRanks[$cardNum] = $rank;
+            if ($rank < 10) {
                 $rank++;
             }
-            // ['A' => 1, '2' => 2, ... 'Q' => 12, 'K' => 13 ]
-            $this->cardRanks = $cardRanks;
-        })());
+        }
+
+        // プロパティに代入
+        $this->cardRanks = $cardRanks;
     }
 
     // スコアを算出して返す

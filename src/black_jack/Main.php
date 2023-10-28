@@ -6,6 +6,7 @@ require_once('Game.php');
 require_once('Player.php');
 require_once('Dealer.php');
 require_once('Deck.php');
+require_once('Judge.php');
 
 
 // プレイヤーを生成する
