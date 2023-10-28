@@ -24,10 +24,12 @@ $game = new Game($player, $dealer, $deck, $judge);
 $game->start();
 
 // プレイヤーのターン
-$game->playerTurn();
+$under21 = $game->playerTurn();
 
-// ディーラーのターン
-$game->DealerTurn();
+if ($under21) {
+    // ディーラーのターン
+    $game->DealerTurn();
+}
 
-// 
-$game->showResult();
+// 結果発表
+$game->showResult($under21);
