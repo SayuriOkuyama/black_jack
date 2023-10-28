@@ -20,3 +20,6 @@ $game = new Game($player, $dealer, $deck);
 
 // ゲームスタート
 $game->start();
+
+// プレイヤーのターン
+$game->playerTurn();

@@ -9,7 +9,7 @@ class Dealer implements User
 {
     // 表示名を定義
     public string $userName = "ディーラー";
-    // ディーラーのカードを保持
+    // ディーラーのカードを保持 [[$mark,$numAl].[$mark,$numAl],...]
     public array $drawnCards = [];
     // ディーラーのスコアを保持
     public int $userScore;

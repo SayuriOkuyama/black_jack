@@ -9,7 +9,7 @@ class Player implements User
 {
     // 表示名を定義
     public string $userName = "あなた";
-    // プレイヤーのカードを保持する
+    // プレイヤーのカードを保持する [[$mark,$numAl].[$mark,$numAl],...]
     public array $drawnCards;
     // プレイヤーの得点を保持
     public int $userScore;

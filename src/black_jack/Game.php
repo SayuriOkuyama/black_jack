@@ -5,6 +5,7 @@ namespace BlackJack;
 require_once('Player.php');
 require_once('Dealer.php');
 require_once('Deck.php');
+require_once('Judge.php');
 
 // ゲーム全体の進行を扱う
 class Game
@@ -51,5 +52,16 @@ class Game
         foreach ($allInfo as $info) {
             echo "{$info[0]}の引いたカードは{$info[1]}の{$info[2]}です。" . PHP_EOL;
         }
+    }
+
+    // プレイヤーターン。スコアを確認し、続けるか決める
+    public function playerTurn()
+    {
+        // 判定係のインスタンスを生成
+        $judge = new Judge($this->deck);
+        // 現時点でのスコアを算出
+        $playerScore = $judge->calculateScore($this->player->drawnCards, $this->player);
+
+        echo "あなたの現在の得点は{$playerScore}です。カードを引きますか？（Y/N）" . PHP_EOL;
     }
 }

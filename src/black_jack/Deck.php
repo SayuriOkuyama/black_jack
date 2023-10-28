@@ -9,7 +9,7 @@ class Deck
     // カードの束を保存する
     private array $cardStock;
     // 数字・アルファベット部分
-    public array $numbersOrAlphabets = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+    public const CARD_NUM = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 
     // デッキ呼び出し時に、カードを生成してシャッフルしておく
     public function __construct()
@@ -17,9 +17,9 @@ class Deck
         $cardStock = [];
         // 52枚のカードの束を生成
         foreach (['クラブ', 'ハート', 'スペード', 'ダイヤ'] as $mark) {
-            foreach ($this->numbersOrAlphabets as $numberOrAlphabet) {
+            foreach ($this::CARD_NUM as $cardNum) {
                 // [[new Card('クラブ', 'A')], [new Card('クラブ', '2')],...]
-                $cardStock[] = new Card($mark, $numberOrAlphabet);
+                $cardStock[] = new Card($mark, $cardNum);
             }
         }
 
@@ -35,14 +35,3 @@ class Deck
         return array_shift($this->cardStock);
     }
 }
-
-// $deck = new Deck();
-// $cardStock = [];
-// // 52枚のカードの束を生成
-// foreach (['クラブ', 'ハート', 'スペード', 'ダイヤ'] as $mark) {
-//     foreach ($deck->numbersOrAlphabets as $numberOrAlphabet) {
-//         // [[new Card('クラブ', 'A')], [new Card('クラブ', '2')],...]
-//         $cardStock[] = new Card($mark, $numberOrAlphabet);
-//     }
-// }
-// var_dump($cardStock);
