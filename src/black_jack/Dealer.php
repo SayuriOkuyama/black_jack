@@ -20,7 +20,14 @@ class Dealer implements User
         return $deck->drawCard();
     }
 
-    public function selectContinue()
+    // 引き続けるかどうか
+    public function selectContinue(): bool
     {
+        if ($this->userScore < 17) {
+            $continue = true;
+        } else {
+            $continue = false;
+        }
+        return $continue;
     }
 }

@@ -95,7 +95,9 @@ class Game
         // 現時点でのスコアを算出
         $this->dealer->userScore = $this->judge->calculateScore($this->dealer->drawnCards, $this->dealer);
 
-        while ($this->dealer->userScore < 17) {
+        $continue = $this->dealer->selectContinue();
+
+        while ($continue) {
             echo "ディーラーのの現在の得点は{$this->dealer->userScore}です。" . PHP_EOL;
 
             // カードインスタンスを引く
@@ -113,22 +115,17 @@ class Game
 
             // 現時点でのスコアを算出
             $this->dealer->userScore = $this->judge->calculateScore($this->dealer->drawnCards, $this->dealer);
+
+            // 続けるかどうか
+            $continue = $this->dealer->selectContinue();
         }
     }
 
     // 結果表示
     public function showResult(bool $under21): void
     {
-        if ($under21) {
-            echo "あなたの得点は{$this->player->userScore}です。" . PHP_EOL;
-            echo "ディーラーの得点は{$this->dealer->userScore}です。" . PHP_EOL;
-
-            echo $this->judge->judgeWinner($this->player, $this->dealer);
-        } else {
-            echo "あなたの得点は{$this->player->userScore}です。" . PHP_EOL;
-            echo "あなたの得点が21を超えました。" . PHP_EOL;
-            echo "ディーラーの勝ちです。" . PHP_EOL;
-        }
+        // 勝者の判定結果を出力
+        $this->judge->judgeWinner($this->player, $this->dealer, $under21);
 
         echo "ブラックジャックを終了します。" . PHP_EOL;
     }

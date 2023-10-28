@@ -39,19 +39,31 @@ class Judge
         return $user->userScore;
     }
 
-    public function judgeWinner(Player $player, Dealer $dealer)
+    // 勝敗判定
+    public function judgeWinner(Player $player, Dealer $dealer, $under21): void
     {
-        // それぞれの得点の、21との差を求める
-        $playerDifference = abs($player->userScore - 21);
-        $dealerDifference = abs($dealer->userScore - 21);
+        // プレイヤーの得点が21を超えていない場合
+        if ($under21) {
 
-        // 差が小さい方が勝ち
-        if ($playerDifference < $dealerDifference) {
-            return "あなたの勝ちです！" . PHP_EOL;
-        } elseif ($playerDifference > $dealerDifference) {
-            return "ディーラーの勝ちです。" . PHP_EOL;
-        } elseif ($playerDifference === $dealerDifference) {
-            return "引き分けです。" . PHP_EOL;
+            echo "あなたの得点は{$player->userScore}です。" . PHP_EOL;
+            echo "ディーラーの得点は{$dealer->userScore}です。" . PHP_EOL;
+
+            // それぞれの得点の、21との差を求める
+            $playerDifference = abs($player->userScore - 21);
+            $dealerDifference = abs($dealer->userScore - 21);
+
+            // 差が小さい方が勝ち
+            if ($playerDifference < $dealerDifference) {
+                echo "あなたの勝ちです！" . PHP_EOL;
+            } elseif ($playerDifference > $dealerDifference) {
+                echo "ディーラーの勝ちです。" . PHP_EOL;
+            } elseif ($playerDifference === $dealerDifference) {
+                echo "引き分けです。" . PHP_EOL;
+            }
+        } else {
+            echo "あなたの得点は{$player->userScore}です。" . PHP_EOL;
+            echo "あなたの得点が21を超えました。" . PHP_EOL;
+            echo "ディーラーの勝ちです。" . PHP_EOL;
         }
     }
 }

@@ -31,7 +31,7 @@ class Player implements User
             } elseif ($continue == "N") {
                 return false;
             } else {
-                echo "Y か N を入力してください";
+                echo "Y か N を入力してください。" . PHP_EOL;
             }
         }
     }
