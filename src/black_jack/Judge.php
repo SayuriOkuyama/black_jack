@@ -49,9 +49,9 @@ class Judge
         if ($playerDifference < $dealerDifference) {
             return "あなたの勝ちです！" . PHP_EOL;
         } elseif ($playerDifference > $dealerDifference) {
-            return "ディーラーの勝ちです！" . PHP_EOL;
+            return "ディーラーの勝ちです。" . PHP_EOL;
         } elseif ($playerDifference === $dealerDifference) {
-            return "引き分けです！" . PHP_EOL;
+            return "引き分けです。" . PHP_EOL;
         }
     }
 }

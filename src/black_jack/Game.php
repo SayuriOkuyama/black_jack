@@ -55,13 +55,17 @@ class Game
     }
 
     // プレイヤーターン。スコアを確認し、続けるか決める
-    public function playerTurn(): void
+    public function playerTurn(): bool
     {
         $continue = true;
 
         while ($continue) {
             // 現時点でのスコアを算出
             $this->player->userScore = $this->judge->calculateScore($this->player->drawnCards, $this->player);
+
+            if ($this->player->userScore >= 21) {
+                return $under21 = false;
+            }
 
             echo "あなたの現在の得点は{$this->player->userScore}です。カードを引きますか？（Y/N）" . PHP_EOL;
             // もう一枚引くかの分岐
@@ -80,6 +84,7 @@ class Game
                 $this->showCard($info);
             }
         }
+        return $under21 = true;
     }
 
     public function DealerTurn(): void
@@ -112,12 +117,18 @@ class Game
     }
 
     // 結果表示
-    public function showResult(): void
+    public function showResult(bool $under21): void
     {
-        echo "あなたの得点は{$this->player->userScore}です。" . PHP_EOL;
-        echo "ディーラーの得点は{$this->dealer->userScore}です。" . PHP_EOL;
+        if ($under21) {
+            echo "あなたの得点は{$this->player->userScore}です。" . PHP_EOL;
+            echo "ディーラーの得点は{$this->dealer->userScore}です。" . PHP_EOL;
 
-        echo $this->judge->judgeWinner($this->player, $this->dealer);
+            echo $this->judge->judgeWinner($this->player, $this->dealer);
+        } else {
+            echo "あなたの得点は{$this->player->userScore}です。" . PHP_EOL;
+            echo "あなたの得点が21を超えました。" . PHP_EOL;
+            echo "ディーラーの勝ちです。" . PHP_EOL;
+        }
 
         echo "ブラックジャックを終了します。" . PHP_EOL;
     }
