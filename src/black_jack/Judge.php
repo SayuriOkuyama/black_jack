@@ -8,6 +8,8 @@ class Judge
 {
     // カードのランク表 ['A' => 1, '2' => 2, ... 'Q' => 10, 'K' => 10 ]
     public array $cardRanks;
+    private const SCORE_OF_A = 1;
+    private const ANOTHER_SCORE_OF_A = 11;
 
     public function __construct()
     {
@@ -32,10 +34,25 @@ class Judge
     {
         // カード情報の数字（アルファベット）をキーとするカードランクを取得
         // $drawnCards [["ハート","A"],["ハート","8"],...]
-        $ranks = array_map(fn ($drawnCard) => $this->cardRanks[$drawnCard[1]], $drawnCards);;
+        $ranks = array_map(fn ($drawnCard) => $this->cardRanks[$drawnCard[1]], $drawnCards);
 
         // ランクを合計してスコアに格納
-        $user->userScore = array_sum($ranks);
+        $userScore = array_sum($ranks);
+
+        // 手札にランク 1 の A がある場合
+        if (in_array(1, $ranks)) {
+            // もう一つのスコアとして、1 ではなく 11 を加算
+            $anotherScore = $userScore - self::SCORE_OF_A + self::ANOTHER_SCORE_OF_A;
+
+            // 大きい 11 の方の得点が 21 を超えないなら
+            if ($anotherScore < 21) {
+                // そのスコアの方を返す
+                $userScore = $anotherScore;
+            }
+        }
+
+        // ユーザーの得点として保存
+        $user->userScore = $userScore;
 
         // 得点を返す
         return $user->userScore;

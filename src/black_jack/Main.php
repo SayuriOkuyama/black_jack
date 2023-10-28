@@ -30,7 +30,7 @@ $under21 = $game->playerTurn();
 // プレイヤーの得点が21を超えていなければ
 if ($under21) {
     // ディーラーのターン
-    $game->DealerTurn();
+    $game->dealerTurn();
 }
 
 // 結果発表

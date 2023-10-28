@@ -87,7 +87,7 @@ class Game
         return $under21 = true;
     }
 
-    public function DealerTurn(): void
+    public function dealerTurn(): void
     {
         // ディーラーの２枚目のカードを開示
         echo "ディーラーの引いた2枚目のカードは{$this->dealer->drawnCards[1][0]}の{$this->dealer->drawnCards[1][1]}でした。" . PHP_EOL;
