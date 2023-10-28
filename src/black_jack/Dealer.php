@@ -14,9 +14,13 @@ class Dealer implements User
     // ディーラーのスコアを保持
     public int $userScore;
 
-    // カードを引く
-    public function drawCard(Deck $deck)
+    // カード（インスタンス）を引く
+    public function drawCard(Deck $deck): object
     {
         return $deck->drawCard();
+    }
+
+    public function selectContinue()
+    {
     }
 }

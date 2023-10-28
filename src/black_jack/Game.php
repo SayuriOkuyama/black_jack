@@ -34,24 +34,24 @@ class Game
                 // ユーザーの手持ちカードに加える [[$mark,$numAl].[$mark,$numAl],...]
                 $user->drawnCards[] = $cardInfo;
                 // 表示用の情報をまとめる [[$user,$mark,$numAl],[user,$mark,$numAl]]
-                $info[] = array_merge([$user->userName], $cardInfo);
+                $allInfo[] = array_merge([$user->userName], $cardInfo);
             }
         }
 
         // 配列の最後の要素を削除し、ディーラーの２枚目の情報を削除
-        array_pop($info);
+        array_pop($allInfo);
 
         // プレイヤーの２枚、ディーラーの１枚目のカードの開示
-        $this->showCard($info);
+        foreach ($allInfo as $info) {
+            $this->showCard($info);
+        }
 
         echo "ディーラーの引いた2枚目のカードはわかりません。" . PHP_EOL;
     }
 
-    public function showCard(array $allInfo): void
+    public function showCard(array $info): void
     {
-        foreach ($allInfo as $info) {
-            echo "{$info[0]}の引いたカードは{$info[1]}の{$info[2]}です。" . PHP_EOL;
-        }
+        echo "{$info[0]}の引いたカードは{$info[1]}の{$info[2]}です。" . PHP_EOL;
     }
 
     // プレイヤーターン。スコアを確認し、続けるか決める
@@ -59,9 +59,29 @@ class Game
     {
         // 判定係のインスタンスを生成
         $judge = new Judge($this->deck);
-        // 現時点でのスコアを算出
-        $playerScore = $judge->calculateScore($this->player->drawnCards, $this->player);
 
-        echo "あなたの現在の得点は{$playerScore}です。カードを引きますか？（Y/N）" . PHP_EOL;
+        $continue = true;
+
+        while ($continue) {
+            // 現時点でのスコアを算出
+            $playerScore = $judge->calculateScore($this->player->drawnCards, $this->player);
+
+            echo "あなたの現在の得点は{$playerScore}です。カードを引きますか？（Y/N）";
+            // もう一枚引くかの分岐
+            $continue = $this->player->selectContinue();
+
+            if ($continue) {
+                // カードインスタンスを引く
+                $card = $this->player->drawCard($this->deck);
+                // カードの情報を取得 [$mark,$numAl]
+                $cardInfo = $card->getCardInfo();
+                // ユーザーの手持ちカードに加える [[$mark,$numAl].[$mark,$numAl],...]
+                $this->player->drawnCards[] = $cardInfo;
+                // 表示用にユーザー名も加える
+                $info = array_merge([$this->player->userName], $cardInfo);
+                // 取得結果を表示する
+                $this->showCard($info);
+            }
+        }
     }
 }

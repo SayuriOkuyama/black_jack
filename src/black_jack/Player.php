@@ -14,9 +14,23 @@ class Player implements User
     // プレイヤーの得点を保持
     public int $userScore;
 
-    // カードを引いて、
-    public function drawCard(Deck $deck)
+    // カード（インスタンス）を引く
+    public function drawCard(Deck $deck): object
     {
         return $deck->drawCard();
+    }
+
+    public function selectContinue(): bool
+    {
+        while (true) {
+            $continue = trim(fgets(STDIN));
+            if ($continue == "Y") {
+                return true;
+            } elseif ($continue == "N") {
+                return false;
+            } else {
+                echo "Y か N を入力してください";
+            }
+        }
     }
 }
