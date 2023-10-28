@@ -9,8 +9,8 @@ class Card
     {
     }
 
-    // マークを返す
-    public function getCardInfo()
+    // カード情報を返す
+    public function getCardInfo(): array
     {
         return [$this->mark, $this->cardNum];
     }
