@@ -2,17 +2,16 @@
 
 namespace BlackJack;
 
-require_once('User.php');
-require_once('Deck.php');
-
-class Player implements User
+abstract class Player
 {
-    // 表示名を定義
-    public string $userName = "あなた";
     // プレイヤーのカードを保持する [[$mark,$numAl].[$mark,$numAl],...]
-    public array $drawnCards;
+    public array $drawnCards = [];
+    // 表示名を定義
+    public string $playerName = "";
     // プレイヤーの得点を保持
-    public int $userScore;
+    public int $playerScore = 0;
+
+    public bool $continue = true;
 
     // カード（インスタンス）を引く
     public function drawCard(Deck $deck): object
@@ -21,18 +20,14 @@ class Player implements User
     }
 
     // もう一枚引くか選択
-    public function selectContinue(): bool
+    abstract public function selectContinue(string $playerName);
+
+    // 自分の現時点でのスコアを取得する
+    public function getStore(Judge $judge): int
     {
-        while (true) {
-            // 標準入力を受け取る
-            $continue = trim(fgets(STDIN));
-            if ($continue == "Y") {
-                return true;
-            } elseif ($continue == "N") {
-                return false;
-            } else {
-                echo "Y か N を入力してください。" . PHP_EOL;
-            }
-        }
+        // 現時点でのスコアを算出
+        $this->playerScore = $judge->calculateScore($this->drawnCards, $this);
+
+        return $this->playerScore;
     }
 }

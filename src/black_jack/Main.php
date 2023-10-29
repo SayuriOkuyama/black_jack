@@ -3,35 +3,39 @@
 namespace BlackJack;
 
 require_once('Game.php');
-require_once('Player.php');
+require_once('UserPlayer.php');
+require_once('AutoPlayer.php');
 require_once('Dealer.php');
 require_once('Deck.php');
 require_once('Judge.php');
 
 
-// プレイヤーを生成する
-$player = new Player();
 // ディーラーを生成する
 $dealer = new Dealer();
 // デッキを生成する
 $deck = new Deck();
 // 判定係を生成する
 $judge = new Judge();
+// プレイヤーを生成する
+$userPlayer = new UserPlayer();
 
 // 上記インスタンスを渡してゲームを開始する
-$game = new Game($player, $dealer, $deck, $judge);
+$game = new Game($deck, $judge);
 
-// ゲームスタート
-$game->start();
+// ゲームスタートし、オートプレイヤーを生成
+$autoPlayers = $game->start();
 
-// プレイヤーのターン
-$under21 = $game->playerTurn();
+// 最初のカードが配られる
+$game->prepare($userPlayer, $autoPlayers, $dealer);
 
-// プレイヤーの得点が21を超えていなければ
-if ($under21) {
+// プレイヤーのターンを実行し、21 を超えていないプレイヤーを取得
+$under21Players = $game->playerTurn($userPlayer, $autoPlayers, $judge);
+
+// 得点が 21 を超えていないプレイヤーがいれば
+if ($under21Players) {
     // ディーラーのターン
-    $game->dealerTurn();
+    $game->dealerTurn($dealer);
 }
 
 // 結果発表
-$game->showResult($under21);
+$game->showResult($under21Players, $dealer);
