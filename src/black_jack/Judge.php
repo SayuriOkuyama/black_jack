@@ -75,17 +75,22 @@ class Judge
             echo "{$player->playerName}の現在の得点は{$player->playerScore}です。" . PHP_EOL;
             echo "ディーラーの得点は{$dealer->playerScore}です。" . PHP_EOL;
 
-            // それぞれの得点の、21との差を求める
-            $playerDifference = abs($player->playerScore - 21);
-            $dealerDifference = abs($dealer->playerScore - 21);
+            if ($dealer->playerScore > 21) {
+                echo "{$dealer->playerName}の得点が21を超えました。" . PHP_EOL;
+                echo "{$player->playerName}とディーラーの勝負は、{$player->playerName}の勝ちです。" . PHP_EOL;
+            } else {
+                // それぞれの得点の、21との差を求める
+                $playerDifference = 21 - $player->playerScore;
+                $dealerDifference = 21 - $dealer->playerScore;
 
-            // 差が小さい方が勝ち
-            if ($playerDifference < $dealerDifference) {
-                echo "{$player->playerName}と{$dealer->playerName}の勝負は、{$player->playerName}の勝ちです。" . PHP_EOL;
-            } elseif ($playerDifference > $dealerDifference) {
-                echo "{$player->playerName}と{$dealer->playerName}の勝負は、{$dealer->playerName}の勝ちです。" . PHP_EOL;
-            } elseif ($playerDifference === $dealerDifference) {
-                echo "{$player->playerName}と{$dealer->playerName}の勝負は、引き分けです。" . PHP_EOL;
+                // 差が小さい方が勝ち
+                if ($playerDifference < $dealerDifference) {
+                    echo "{$player->playerName}と{$dealer->playerName}の勝負は、{$player->playerName}の勝ちです。" . PHP_EOL;
+                } elseif ($playerDifference > $dealerDifference) {
+                    echo "{$player->playerName}と{$dealer->playerName}の勝負は、{$dealer->playerName}の勝ちです。" . PHP_EOL;
+                } elseif ($playerDifference === $dealerDifference) {
+                    echo "{$player->playerName}と{$dealer->playerName}の勝負は、引き分けです。" . PHP_EOL;
+                }
             }
         }
     }

@@ -90,24 +90,26 @@ class Game
 
         // もう一枚引くプレイヤーの配列
         $continuePlayers = $players;
+        echo "-------------------------------------------" . PHP_EOL;
+        echo "[ 現在の得点 ]" . PHP_EOL;
+        // プレイヤーそれぞれの得点を表示
+        foreach ($continuePlayers as $continuePlayer) {
+
+            // 現時点でのスコアを取得する
+            $continuePlayer->playerScore = $continuePlayer->getStore($this->judge);
+
+            if ($continuePlayer->playerScore >= 21) {
+                // 終了させる
+                $judge->resultUnder21($continuePlayer);
+                return false;
+            }
+
+            echo "{$continuePlayer->playerName}の現在の得点は{$continuePlayer->playerScore}です。" . PHP_EOL;
+        }
 
         // もう一枚引くプレイヤーがいれば
         while (count($continuePlayers)) {
             echo "-------------------------------------------" . PHP_EOL;
-            // プレイヤーそれぞれの得点を表示
-            foreach ($continuePlayers as $continuePlayer) {
-
-                // 現時点でのスコアを取得する
-                $continuePlayer->playerScore = $continuePlayer->getStore($this->judge);
-
-                if ($continuePlayer->playerScore >= 21) {
-                    // 終了させる
-                    $judge->resultUnder21($continuePlayer);
-                    return false;
-                }
-
-                echo "{$continuePlayer->playerName}の現在の得点は{$continuePlayer->playerScore}です。" . PHP_EOL;
-            }
 
             // 各プレイヤー毎に実行
             foreach ($continuePlayers as $continuePlayer) {
@@ -128,6 +130,23 @@ class Game
                     unset($continuePlayers[$continuePlayer->playerNum]);
                 }
             }
+            if (count($continuePlayers) > 1) {
+                // プレイヤーそれぞれの得点を表示
+                echo "[ 現在の得点 ]";
+                foreach ($continuePlayers as $continuePlayer) {
+
+                    // 現時点でのスコアを取得する
+                    $continuePlayer->playerScore = $continuePlayer->getStore($this->judge);
+
+                    if ($continuePlayer->playerScore >= 21) {
+                        // 終了させる
+                        $judge->resultUnder21($continuePlayer);
+                        return false;
+                    }
+
+                    echo "{$continuePlayer->playerName}の現在の得点は{$continuePlayer->playerScore}です。" . PHP_EOL;
+                }
+            }
         }
 
         // 21 以上で負けていない、残りのプレイヤーを返す
@@ -138,16 +157,6 @@ class Game
     public function onePlayerTurn(Player $player, Judge $judge)
     {
         echo "-------------------------------------------" . PHP_EOL;
-        // 現時点でのスコアを取得する
-        // $player->playerScore = $player->getStore($this->judge);
-
-        // if ($player->playerScore >= 21) {
-        //     // 終了させる
-        //     $judge->resultUnder21($player);
-        //     return false;
-        // }
-
-        // echo "{$player->playerName}の現在の得点は{$player->playerScore}です。" . PHP_EOL;
 
         // もう一枚引くかの分岐
         $player->selectContinue($player->playerName);
