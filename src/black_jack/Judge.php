@@ -30,7 +30,7 @@ class Judge
     }
 
     // スコアを算出して返す
-    public function calculateScore(array $drawnCards, User $user): int
+    public function calculateScore(array $drawnCards, Player $player): int
     {
         // カード情報の数字（アルファベット）をキーとするカードランクを取得
         // $drawnCards [["ハート","A"],["ハート","8"],...]
@@ -45,44 +45,48 @@ class Judge
             $anotherScore = $userScore - self::SCORE_OF_A + self::ANOTHER_SCORE_OF_A;
 
             // 大きい 11 の方の得点が 21 を超えないなら
-            if ($anotherScore < 21) {
+            if ($anotherScore <= 21) {
                 // そのスコアの方を返す
                 $userScore = $anotherScore;
             }
         }
 
         // ユーザーの得点として保存
-        $user->userScore = $userScore;
+        $player->playerScore = $userScore;
 
         // 得点を返す
-        return $user->userScore;
+        return $player->playerScore;
     }
 
-    // 勝敗判定
-    public function judgeWinner(Player $player, Dealer $dealer, $under21): void
-    {
-        // プレイヤーの得点が21を超えていない場合
-        if ($under21) {
 
-            echo "あなたの得点は{$player->userScore}です。" . PHP_EOL;
-            echo "ディーラーの得点は{$dealer->userScore}です。" . PHP_EOL;
+    public function resultUnder21(Player $player): void
+    {
+        echo "{$player->playerName}の得点が21を超えました。" . PHP_EOL;
+        echo "{$player->playerName}とディーラーの勝負は、ディーラーの勝ちです。" . PHP_EOL;
+    }
+
+
+    // 勝敗判定
+    public function judgeWinner(array $players, Dealer $dealer): void
+    {
+        // 21 を超えなかったプレイヤーそれぞれに処理
+        foreach ($players as $player) {
+            echo "-------------------------------------------" . PHP_EOL;
+            echo "{$player->playerName}の現在の得点は{$player->playerScore}です。" . PHP_EOL;
+            echo "ディーラーの得点は{$dealer->playerScore}です。" . PHP_EOL;
 
             // それぞれの得点の、21との差を求める
-            $playerDifference = abs($player->userScore - 21);
-            $dealerDifference = abs($dealer->userScore - 21);
+            $playerDifference = abs($player->playerScore - 21);
+            $dealerDifference = abs($dealer->playerScore - 21);
 
             // 差が小さい方が勝ち
             if ($playerDifference < $dealerDifference) {
-                echo "あなたの勝ちです！" . PHP_EOL;
+                echo "{$player->playerName}と{$dealer->playerName}の勝負は、{$player->playerName}の勝ちです。" . PHP_EOL;
             } elseif ($playerDifference > $dealerDifference) {
-                echo "ディーラーの勝ちです。" . PHP_EOL;
+                echo "{$player->playerName}と{$dealer->playerName}の勝負は、{$dealer->playerName}の勝ちです。" . PHP_EOL;
             } elseif ($playerDifference === $dealerDifference) {
-                echo "引き分けです。" . PHP_EOL;
+                echo "{$player->playerName}と{$dealer->playerName}の勝負は、引き分けです。" . PHP_EOL;
             }
-        } else {
-            echo "あなたの得点は{$player->userScore}です。" . PHP_EOL;
-            echo "あなたの得点が21を超えました。" . PHP_EOL;
-            echo "ディーラーの勝ちです。" . PHP_EOL;
         }
     }
 }
