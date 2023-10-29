@@ -109,7 +109,7 @@ class Game
 
         // もう一枚引くプレイヤーがいれば
         while (count($continuePlayers)) {
-            echo "-------------------------------------------" . PHP_EOL;
+            // echo "-------------------------------------------" . PHP_EOL;
 
             // 各プレイヤー毎に実行
             foreach ($continuePlayers as $continuePlayer) {
