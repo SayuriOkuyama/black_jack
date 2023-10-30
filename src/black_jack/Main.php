@@ -12,7 +12,7 @@ require_once('Judge.php');
 
 // ディーラーを生成する
 $dealer = new Dealer();
-// デッキを生成する
+// デッキを生成するY
 $deck = new Deck();
 // 判定係を生成する
 $judge = new Judge();
