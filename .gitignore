@@ -1,0 +1,3 @@
+# git で管理しないファイル
+docker/db/mysql_data
+src/vendor
